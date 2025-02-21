@@ -8,6 +8,6 @@ app.use(cors());
 app.use(express.json());
 app.use("/", AdminRouter);
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Server is Running");
 });

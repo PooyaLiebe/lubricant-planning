@@ -17,7 +17,7 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:3000/", values)
+      .post("https://linux50.centraldnserver.com/", values)
       .then((res) => {
         console.log(res);
         navigate("/dashboard");
