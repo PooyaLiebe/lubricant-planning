@@ -1,35 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Button, Layout, theme } from "antd";
+import Logo from "./components/Logo";
+import MenuList from "./components/MenuList";
+import ToggleThemeButton from "./components/ToggleThemeButton";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import Dashboard from "./pages/Dashboard";
+import SubmitForm from "./pages/SubmitForm";
+import TecOpForms from "./pages/TecOpForms";
+import GreaseForm from "./pages/GreaseForm";
+import OilForm from "./pages/OilForm";
+import Setting from "./pages/Setting";
+import SubmitOil from "./pages/SubmitOil";
+import SubmitGrease from "./pages/SubmitGrease";
+import Login from "./pages/Login";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { Header, Sider, Content } = Layout;
+  const [darkTheme, setDarkTheme] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const location = useLocation(); // Get current route
+  const hideComponents = location.pathname === "/"; // Hide Sidebar & Header on "/"
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout>
+      {!hideComponents && (
+        <Sider
+          collapsed={collapsed}
+          collapsible
+          trigger={null}
+          theme={darkTheme ? "dark" : "light"}
+          className="sidebar"
+        >
+          <Logo />
+          <MenuList darkTheme={darkTheme} />
+          <ToggleThemeButton
+            darkTheme={darkTheme}
+            toggleTheme={() => setDarkTheme(!darkTheme)}
+          />
+        </Sider>
+      )}
+      <Layout>
+        {!hideComponents && (
+          <Header style={{ padding: 0, background: colorBgContainer }}>
+            <Button
+              type="text"
+              className="toggle"
+              onClick={() => setCollapsed(!collapsed)}
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            />
+          </Header>
+        )}
+        <Content>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/submitoil" element={<SubmitOil />} />
+            <Route path="/submitgrease" element={<SubmitGrease />} />
+            <Route path="/submitform" element={<SubmitForm />} />
+            <Route path="/tecopforms" element={<TecOpForms />} />
+            <Route path="/greaseform" element={<GreaseForm />} />
+            <Route path="/oilform" element={<OilForm />} />
+            <Route path="/setting" element={<Setting />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
+  );
 }
 
-export default App
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
+export default AppWrapper;
