@@ -1,16 +1,18 @@
-/* eslint-disable no-undef */
-import mongoose from "mongoose";
+import mysql from "mysql";
 
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://pooya:pooya6331@preventive.nytf8.mongodb.net/?retryWrites=true&w=majority&appName=Preventive"
-    );
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "users",
+});
+
+con.connect(function (err) {
+  if (err) {
+    console.log("Connection Error", err);
+  } else {
+    console.log("Connected");
   }
-};
+});
 
-export default connectDB;
+export default con;

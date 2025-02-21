@@ -17,12 +17,10 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/", values)
-      .then((result) => {
-        console.log(result);
-        if (result.data === "Success") {
-          navigate("/submitform");
-        }
+      .post("http://localhost:3000/", values)
+      .then((res) => {
+        console.log(res);
+        navigate("/dashboard");
       })
       .catch((err) => console.log(err));
   };
